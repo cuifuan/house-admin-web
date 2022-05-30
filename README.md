@@ -1,5 +1,11 @@
 # bran-admin-web
 
+
+
+## demo 图例
+
+![登录](./images/login.png)
+
 ## 相关技术
 
 [pinia-plugin-persist](https://seb-l.github.io/pinia-plugin-persist/) pinia 持久化插件
