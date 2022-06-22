@@ -1,27 +1,26 @@
-import { createApp } from 'vue';
-import App from './App.vue';
+import { createApp } from 'vue'
+import App from './App.vue'
 
 // 引入 ui 框架
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.less';
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.less'
+import './styles/base.less'
+import { createPinia } from 'pinia'
+import piniaPluginPersist from 'pinia-plugin-persist'
 
-// import { store, key } from './store';
-//app.js
-import { createPinia } from 'pinia';
-import piniaPluginPersist from 'pinia-plugin-persist';
-
-const app = createApp(App);
+const app = createApp(App)
 
 // 引入轻量级状态管理库
 
-const pinia = createPinia();
-pinia.use(piniaPluginPersist);
-app.use(pinia);
+const pinia = createPinia()
+pinia.use(piniaPluginPersist)
+app.use(pinia)
 // 挂载路由
 // 配置 router 导入
-import router from '@/router';
-app.use(router);
+import router from '@/router'
 
-app.use(Antd);
+app.use(router)
 
-app.mount('#app');
+app.use(Antd)
+
+app.mount('#app')

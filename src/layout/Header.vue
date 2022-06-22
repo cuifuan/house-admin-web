@@ -30,23 +30,24 @@
 </template>
 
 <script setup lang="ts">
-import CommonTabVue from './CommonTab.vue';
-import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons-vue';
-import { reactive, ref } from 'vue';
-const collapsed = ref(false);
+import CommonTabVue from './CommonTab.vue'
+import { MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { reactive, ref } from 'vue'
+import { dbStore } from '@/store'
+const collapsed = ref(false)
+const storeX = dbStore()
 const toggleCollapsed = () => {
-  collapsed.value = !collapsed.value;
-};
-const newTabIndex = ref(0);
+  collapsed.value = !collapsed.value
+  storeX.setCollapsed(collapsed.value)
+}
+const newTabIndex = ref(0)
 </script>
 <style lang="less" scoped>
 .header {
-  width: 100%;
   height: 91px;
   background-color: #ffffff;
   color: #303133;
   box-sizing: border-box;
-
   .header_title {
     height: 50px;
     border-bottom: 1px solid #eff1f5;

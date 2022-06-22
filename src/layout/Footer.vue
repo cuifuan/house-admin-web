@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts"></script>
-<style lang="less" scoped>
+<style scoped>
 .footer {
   line-height: 40px;
   text-align: center;

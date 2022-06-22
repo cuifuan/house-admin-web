@@ -17,16 +17,17 @@
   </template>
 </template>
 <script lang="ts" setup>
-import { MenuInterface } from '@/model/menu';
-import { createFromIconfontCN } from '@ant-design/icons-vue';
+import { MenuInterface } from '@/model/menu'
+import { createFromIconfontCN } from '@ant-design/icons-vue'
 
 const IconFont = createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_3017944_l8ypc9406af.js',
-});
+})
 defineProps({
   menuList: {
     type: Array as () => Array<MenuInterface>,
     default: () => [],
   },
-});
+})
 </script>
+<style lang="less" scoped></style>

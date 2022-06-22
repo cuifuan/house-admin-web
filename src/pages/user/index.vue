@@ -7,13 +7,13 @@ export default {
   components: {},
   props: {},
   data() {
-    return {};
+    return {}
   },
   watch: {},
   computed: {},
   methods: {},
   created() {},
   mounted() {},
-};
+}
 </script>
 <style lang="less" scoped></style>

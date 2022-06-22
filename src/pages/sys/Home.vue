@@ -1,21 +1,19 @@
 <template>
-    <div>Home.vue</div>
+  <div>Home.vue22</div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 export default {
-    components: {},
-    props: {},
-    data() {
-        return {
-        };
-    },
-    watch: {},
-    computed: {},
-    methods: {},
-    created() { },
-    mounted() { }
-};
+  components: {},
+  props: {},
+  data() {
+    return {}
+  },
+  watch: {},
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {},
+}
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="less" scoped></style>

@@ -1,80 +1,64 @@
 <template>
-  <div class="content">
-    <Sidebar></Sidebar>
-    <div class="page">
-      <Header></Header>
-      <div class="main">
-        <router-view></router-view>
-      </div>
-      <Footer></Footer>
-    </div>
-  </div>
-  <!-- <a-layout>
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
-      <div class="logo" />
-      <Sidebar class="sidebar"></Sidebar>
+  <a-layout id="components-layout-custom-style" theme="light">
+    <a-layout-sider width="266" v-model:collapsed="collapsed">
+      <Sidebar></Sidebar>
     </a-layout-sider>
-    <a-layout>
-      <a-layout-header>
-        <Header></Header> -->
-  <!-- <menu-unfold-outlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
-        <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" /> -->
-  <!-- </a-layout-header>
-      <a-layout-content
-        :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
-      >
+    <a-layout class="right-custom">
+      <a-layout-header style="line-height: 90px; height: 90px">
+        <Header></Header>
+      </a-layout-header>
+      <a-layout-content>
         <router-view></router-view>
       </a-layout-content>
+      <a-layout-footer>
+        <Footer></Footer>
+      </a-layout-footer>
     </a-layout>
-  </a-layout> -->
+  </a-layout>
 </template>
 
 <script setup lang="ts">
-import Header from '@/layout/Header.vue';
-import Footer from '@/layout/Footer.vue';
-import Sidebar from '@/layout/menu/Sidebar.vue';
+import Header from '@/layout/Header.vue'
+import Footer from '@/layout/Footer.vue'
+import Sidebar from '@/layout/menu/Sidebar.vue'
+import { computed, ref } from 'vue'
+import { dbStore } from '@/store'
+
+const storeX = dbStore()
+const collapsed = computed(() => storeX.collapsed)
+const toggleCollapsed = () => {
+  console.log(1122)
+  const flag = !collapsed
+  storeX.setCollapsed(flag)
+  if (flag) {
+    storeX.openKeys = []
+    storeX.preOpenKeys = storeX.openKeys
+  } else {
+    storeX.openKeys = storeX.preOpenKeys || []
+  }
+}
 </script>
 <style lang="less" scoped>
-.content {
-  width: 100%;
+@menu-width: 266px;
+#components-layout-custom-style {
   height: 100%;
-  display: flex;
-  flex-direction: row;
 
-  .page {
-    width: 80%;
+  .right-custom {
+    .ant-layout-header {
+      background-color: #ffffff;
+      height: 90px;
+      padding: 0;
+      margin: 0;
+    }
+
+    .ant-layout-content {
+      background-color: #ffffff;
+      // height: 90px;
+      padding-left: 20px;
+      padding-top: 20px;
+      margin: 0;
+      box-sizing: border-box;
+    }
   }
-  .main {
-    height: 80%;
-    padding: 20px 20px;
-    box-sizing: border-box;
-  }
-
-  // overflow: hidden;
-}
-#components-layout-demo-custom-trigger .trigger {
-  font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-#components-layout-demo-custom-trigger .trigger:hover {
-  color: #1890ff;
-}
-
-#components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.3);
-  margin: 16px;
-}
-
-.site-layout .site-layout-background {
-  background: #fff;
 }
 </style>
