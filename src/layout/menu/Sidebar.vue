@@ -44,6 +44,8 @@ const state = reactive<StateModel>({
 menuList.forEach((menu) => {
   menu.children && state.rootSubmenuKeys.push('sub' + menu.name)
 })
+state.openKeys = storeX.openKeys
+state.selectedKeys = storeX.selectKeys
 storeX.$subscribe(
   (mutation, statex) => {
     /*

@@ -1,6 +1,6 @@
 // @/router/index.ts
-import { MenuInterface } from '@/model/menu';
-import { useStore } from '@/store';
+import { MenuInterface, MenuTab } from '@/model/menu'
+import { useStore, dbStore } from '@/store'
 
 import {
   createRouter,
@@ -8,10 +8,10 @@ import {
   RouterOptions,
   Router,
   RouteRecordRaw,
-} from 'vue-router';
+} from 'vue-router'
 
 // 白名单(路径)
-const whiteList = ['/login', '/404'];
+const whiteList = ['/login', '/404']
 
 // 基础页面
 const routes: RouteRecordRaw[] = [
@@ -33,7 +33,7 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-];
+]
 
 // RouterOptions是路由选项类型
 const options: RouterOptions = {
@@ -43,20 +43,20 @@ const options: RouterOptions = {
   // 添加baseUrl，createWebHistory(baseUrl)
   history: createWebHashHistory(),
   routes: routes,
-};
+}
 
 // Router是路由对象类型
-const router: Router = createRouter(options);
+const router: Router = createRouter(options)
 
 // const store = useStore();
 
 export const registerRoutes = (): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    const store = useStore();
-    addRoutes(store.menuList);
-    resolve(true);
-  });
-};
+    const store = useStore()
+    addRoutes(store.menuList)
+    resolve(true)
+  })
+}
 
 // 动态添加路由
 const addRoutes = (menu: MenuInterface[], parentName?: string) => {
@@ -67,32 +67,51 @@ const addRoutes = (menu: MenuInterface[], parentName?: string) => {
       name: item.name,
       redirect: item.redirect,
       component: () => import('../' + item.component + '.vue'),
-    };
-    parentName ? router.addRoute(parentName, route) : router.addRoute(route);
+    }
+    parentName ? router.addRoute(parentName, route) : router.addRoute(route)
 
     if (item.children && item.children.length) {
-      addRoutes(item.children, item.name);
+      addRoutes(item.children, item.name)
     }
-  });
-};
+  })
+}
 
 //这里我用vuex的一个变量 asyncRoutestMark 来标识是否拼接过路由
 router.beforeEach((to, from, next) => {
-  const store = useStore();
+  const store = useStore()
+  const storeX = dbStore()
   if (!store.asyncRoutestMark) {
     // 注册动态路由
     registerRoutes()
       .then(() => {
-        store.setAsyncRoutestMark(true); // 添加路由后更改标识为true
-        next({ ...to, replace: true }); //路由进行重定向放行
+        store.setAsyncRoutestMark(true) // 添加路由后更改标识为true
+        next({ ...to, replace: true }) //路由进行重定向放行
       })
       .catch((err) => {
         // 处理异常事件
-        console.log(err);
-      });
+        console.log(err)
+      })
   } else {
-    next();
+    // 处理菜单
+    let name = typeof to.matched[0].name === 'string' ? to.matched[0].name : ''
+    let openKey = 'sub'.concat(name)
+    const openKeys = [openKey]
+    storeX.openKeys = openKeys
+    const selectKeys = typeof to.name === 'string' ? [to.name] : []
+    storeX.selectKeys = selectKeys
+    console.log(typeof to.meta.name)
+    const tab: MenuTab = {
+      path: to.path.replace('/', ''),
+      name: typeof to.meta.name === 'string' ? to.meta.name : '',
+      label: typeof to.meta.name === 'string' ? to.meta.name : '',
+      icon: typeof to.meta.icon === 'string' ? to.meta.icon : '',
+      checked: true,
+      selectKeys: selectKeys,
+      openKeys: openKeys,
+    }
+    storeX.selectMenu(tab)
+    next()
   }
-});
+})
 
-export default router;
+export default router

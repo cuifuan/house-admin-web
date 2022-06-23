@@ -55,7 +55,6 @@ const changeMenu = (item: any) => {
     openKeys: openKeys,
   }
   storeX.selectMenu(tab)
-  // console.log(storeX.openKeys)
 }
 const close = (item: MenuTab) => {
   let path = storeX.closeTab(item)
