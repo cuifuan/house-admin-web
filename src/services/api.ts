@@ -17,7 +17,7 @@ const errorHandler = (error: AxiosError): AxiosError | Promise<AxiosError> => {
  * 创建axios实例
  */
 export const api = axios.create({
-  baseURL: 'http://127.0.0.1:9999/house',
+  baseURL: process.env.BASE_API,
   // 指定请求超时的毫秒数,目前 10 秒
   timeout: 10 * 1000,
 })

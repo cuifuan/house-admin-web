@@ -24,7 +24,7 @@
         "src/*"
       ],
     },
-    "types": ["element-plus/global"]
+    "types": ["element-plus/global","node"]
   },
   "include": [
     "src/**/*.ts",
