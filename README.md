@@ -5,6 +5,7 @@
 ## demo 图例
 
 ![登录](./images/login.png)
+![界面](./images/images2.png)
 
 ## 相关技术
 
