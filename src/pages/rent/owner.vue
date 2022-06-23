@@ -22,46 +22,25 @@
     </a-form>
     <div class="tool">
       <a-button type="default" class="submit_btn">新增租单</a-button>
-      <a-button type="default" class="default_btn">模板下载</a-button>
+      <a-button type="default" class="default_btn" @click="downTemplate" :loading="downLoad"
+        >模板下载
+      </a-button>
       <a-button type="default" class="default_btn">导入</a-button>
       <a-button type="default" class="default_btn">导出</a-button>
     </div>
     <div class="search-result-list">
-      <a-table :columns="columns" :data-source="data">
-        <template #headerCell="{ column }">
-          <template v-if="column.key === 'name'">
-            <span> Name </span>
-          </template>
-        </template>
-
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.key === 'name'">
-            <a>
-              {{ record.name }}
-            </a>
-          </template>
-          <template v-else-if="column.key === 'tags'">
-            <span>
-              <a-tag
-                v-for="tag in record.tags"
-                :key="tag"
-                :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
-              >
-                {{ tag.toUpperCase() }}
-              </a-tag>
-            </span>
-          </template>
-          <template v-else-if="column.key === 'action'">
-            <span>
-              <a>Invite 一 {{ record.name }}</a>
-              <a-divider type="vertical" />
-              <a>Delete</a>
-              <a-divider type="vertical" />
-              <a class="ant-dropdown-link">
-                More actions
-                <down-outlined />
-              </a>
-            </span>
+      <a-table
+        :columns="columns"
+        :data-source="data"
+        :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
+      >
+        <template #bodyCell="{ column, text, record }">
+          <template v-if="column.key === 'action'">
+            <div class="action_btn">
+              <a-button type="default" class="submit_btn">收租</a-button>
+              <a-button type="default" class="default_btn">编辑</a-button>
+              <a-button type="default" class="default_btn">删除</a-button>
+            </div>
           </template>
         </template>
       </a-table>
@@ -69,63 +48,78 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { DownOutlined, UpOutlined } from '@ant-design/icons-vue'
 import type { FormInstance } from 'ant-design-vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
+import { getRentList } from '@/services/sys.service'
+import axios from 'axios'
 
 const columns = [
   {
-    name: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: '小区名称',
+    dataIndex: 'community',
+    key: 'community',
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: '楼号-房间号',
+    dataIndex: 'buildInfo',
+    key: 'buildInfo',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: '应付日期',
+    dataIndex: 'nextDate',
+    key: 'nextDate',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
+    title: '应付租金',
+    dataIndex: 'rent',
+    key: 'rent',
   },
   {
-    title: 'Action',
+    title: '业主姓名',
+    key: 'unionName',
+    dataIndex: 'unionName',
+  },
+  {
+    title: '业主手机号',
+    dataIndex: 'phoneNo',
+    key: 'phoneNo',
+  },
+  {
+    title: '操作',
+    dataIndex: 'action',
     key: 'action',
   },
 ]
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-]
+const data = ref([])
 
 interface FormState {
   build: number | null
 }
+
+let params = {
+  pageNo: 1,
+  pageSize: 10,
+}
+type Key = string | number
+const state = reactive<{
+  selectedRowKeys: Key[]
+  loading: boolean
+  downLoad: boolean
+}>({
+  selectedRowKeys: [], // Check here to configure the default column
+  loading: false,
+  downLoad: false,
+})
+
+getRentList(params).then((res) => {
+  console.log(res)
+  if (res.data) {
+    res.data.forEach((r: any) => {
+      r.buildInfo = r.building + '-' + r.roomNo
+    })
+    data.value = res.data
+  }
+})
 
 const formRef = ref<FormInstance>()
 const formState = reactive<FormState>({
@@ -135,30 +129,85 @@ const onFinish = (values: any) => {
   console.log('Received values of form: ', values)
   console.log('formState: ', formState)
 }
-const resetForm = () => {
-  formRef.value.resetFields()
+const onSelectChange = (selectedRowKeys: Key[]) => {
+  console.log('selectedRowKeys changed: ', selectedRowKeys)
+  state.selectedRowKeys = selectedRowKeys
 }
+const resetForm = () => {
+  // formRef.value.resetFields()
+}
+/**
+ * 下载模板
+ */
+const downTemplate = () => {
+  state.downLoad = true
+  console.log('模板下载')
+  const token = localStorage.getItem('token')
+  axios({
+    method: 'get',
+    url: process.env.BASE_API + '/rentList/modelExport',
+    headers: {
+      'Content-type': 'application/json;charset:utf-8;',
+      Authorization: 'Bearer ' + token, //认证或授权
+    },
+    responseType: 'blob',
+  })
+    .then((res) => {
+      const blob = new Blob([res.data])
+      const fileName = '租单导入模板.xlsx'
+      const elink = document.createElement('a')
+      elink.download = fileName
+      elink.style.display = 'none'
+      elink.href = URL.createObjectURL(blob)
+      document.body.appendChild(elink)
+      elink.click()
+      URL.revokeObjectURL(elink.href) // 释放URL 对象
+      document.body.removeChild(elink)
+      state.downLoad = false
+    })
+    .catch((err) => {
+      console.log(err)
+      state.downLoad = false
+    })
+}
+
+const { selectedRowKeys, downLoad } = toRefs(state)
 </script>
 
 <style lang="less" scoped>
 .container {
   // border: 1px solid black;
   height: 100%;
+
   .search-form {
     // border: 1px solid red;
     margin-bottom: 10px;
   }
+
   .tool {
     line-height: 30px;
     margin-bottom: 15px;
+
     .submit_btn {
       margin-right: 10px;
     }
+
+    .default_btn {
+      margin-right: 10px;
+    }
+  }
+
+  .action_btn {
+    .submit_btn {
+      margin-right: 10px;
+    }
+
     .default_btn {
       margin-right: 10px;
     }
   }
 }
+
 .submit_btn {
   width: 100px;
   color: #ffffff;
@@ -166,9 +215,9 @@ const resetForm = () => {
   height: 35px;
   background-color: @theme-color;
 }
+
 .default_btn {
   width: 100px;
-  color: #ffffff;
   border-color: @theme-color;
   height: 35px;
   color: @theme-color;
