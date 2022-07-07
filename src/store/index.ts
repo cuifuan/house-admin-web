@@ -6,6 +6,7 @@ export interface State {
   asyncRoutestMark: boolean
   menuList: Array<MenuInterface>
 }
+
 export const useStore = defineStore({
   id: 'store', // 唯一 ID，可以配合 Vue devtools 使用
   state: (): State => ({
@@ -13,51 +14,66 @@ export const useStore = defineStore({
     menuList: [
       {
         path: '/sys',
-        name: '人员管理',
-        icon: 'bran-icon-menu-user',
+        name: 'Admin',
+        meta: {
+          title: '系统管理',
+          icon: 'bran-icon-menu-user',
+        },
         menuId: 1,
         component: 'layout/layout',
+        redirect: '/sys/user',
         children: [
           {
-            path: '/sys/user',
-            name: '用户管理',
-            icon: 'custom-icon-user3-copy',
+            path: 'user',
+            name: 'AdminUser',
             menuId: 1001,
-            children: [],
+            meta: {
+              title: '用户管理',
+              icon: 'custom-icon-user3-copy',
+            },
             component: '/pages/user/index',
           },
           {
-            path: '/sys/role',
-            name: '角色管理',
-            icon: 'icon-jiaose',
+            path: 'role',
+            name: 'AdminRole',
             menuId: 1002,
-            children: [],
+            meta: {
+              title: '角色管理',
+              icon: 'icon-jiaose',
+            },
             component: '/pages/role/index',
           },
         ],
       },
       {
         path: '/rent',
-        name: '租单模块',
-        icon: 'bran-icon-menu-user',
+        name: 'Rent',
         menuId: 4,
         component: 'layout/layout',
         redirect: '/rent/owner',
+        meta: {
+          title: '业主租单',
+          icon: 'bran-icon-menu-user',
+        },
         children: [
           {
-            path: '/rent/owner',
-            name: '业主租单',
-            icon: 'icon-jurassic_user',
+            path: 'owner',
+            name: 'RentOwner',
             menuId: 4001,
             component: '/pages/rent/owner',
-            children: [],
+            meta: {
+              title: '业主租单',
+              icon: 'icon-jurassic_user',
+            },
           },
           {
-            path: '/rent/tenant',
-            name: '租客租单',
-            icon: 'icon-jiaose',
+            path: 'tenant',
+            name: 'RentTenant',
             menuId: 4002,
-            children: [],
+            meta: {
+              title: '租客租单',
+              icon: 'icon-jurassic_user',
+            },
             component: '/pages/rent/tenant',
           },
         ],

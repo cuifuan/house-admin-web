@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[] = [
     redirect: '/index',
     children: [
       {
-        path: '/index',
+        path: 'index',
         name: 'HomeIndex',
         component: () => import('@/pages/sys/Home.vue'),
       },
@@ -63,7 +63,7 @@ const addRoutes = (menu: MenuInterface[], parentName?: string) => {
   menu.forEach((item) => {
     const route = {
       path: item.path,
-      meta: { name: item.name, isAsync: true, icon: item.icon },
+      meta: item.meta,
       name: item.name,
       redirect: item.redirect,
       component: () => import('../' + item.component + '.vue'),
@@ -80,6 +80,8 @@ const addRoutes = (menu: MenuInterface[], parentName?: string) => {
 router.beforeEach((to, from, next) => {
   const store = useStore()
   const storeX = dbStore()
+  // console.log(1111)
+  // debugger
   if (!store.asyncRoutestMark) {
     // 注册动态路由
     registerRoutes()
@@ -89,27 +91,35 @@ router.beforeEach((to, from, next) => {
       })
       .catch((err) => {
         // 处理异常事件
-        console.log(err)
+        console.log(222, err)
       })
   } else {
     // 处理菜单
-    let name = typeof to.matched[0].name === 'string' ? to.matched[0].name : ''
-    let openKey = 'sub'.concat(name)
-    const openKeys = [openKey]
-    storeX.openKeys = openKeys
-    const selectKeys = typeof to.name === 'string' ? [to.name] : []
-    storeX.selectKeys = selectKeys
-    console.log(typeof to.meta.name)
+    console.log('是我 a', to.matched)
+    console.log('是我 path', to)
+    let openKeys: string[] = []
+    to.matched.forEach((r) => {
+      openKeys.push(typeof r.name === 'string' ? r.name : '')
+    })
+    const name = typeof to.name === 'string' ? to.name : ''
+    // if (name !== 'Home') {
+    //   let openKey = 'sub'.concat(name)
+    //   const openKeys = [openKey]
+    //   storeX.openKeys = openKeys
+    //   const selectKeys = typeof to.name === 'string' ? [to.name] : []
+    //   storeX.selectKeys = selectKeys
+    //   console.log(typeof to.meta.name)
     const tab: MenuTab = {
-      path: to.path.replace('/', ''),
-      name: typeof to.meta.name === 'string' ? to.meta.name : '',
-      label: typeof to.meta.name === 'string' ? to.meta.name : '',
+      path: to.path,
+      name: name,
+      label: typeof to.meta.title === 'string' ? to.meta.title : '',
       icon: typeof to.meta.icon === 'string' ? to.meta.icon : '',
       checked: true,
-      selectKeys: selectKeys,
+      selectKeys: [name],
       openKeys: openKeys,
     }
     storeX.selectMenu(tab)
+    // }
     next()
   }
 })
