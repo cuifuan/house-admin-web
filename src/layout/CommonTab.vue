@@ -28,33 +28,33 @@ const router = useRouter()
 //选择标签跳转路由
 const changeMenu = (item: any) => {
   router.push(item.path)
-  const pathArray = item.path.split('/')
-  let parentRoute = ''
-  if (pathArray && pathArray.length >= 1) {
-    parentRoute = '/' + pathArray[1]
-  }
-  const selectKeys: string[] = []
-  const openKeys: string[] = []
-  router.getRoutes().forEach((route) => {
-    if (route.path === item.path) {
-      const keys: string = JSON.stringify(route.name).replaceAll('"', '')
-      selectKeys.push(keys)
-    }
-    if (parentRoute === route.path) {
-      const keys: string = 'sub' + JSON.stringify(route.name).replaceAll('"', '')
-      openKeys.push(keys)
-    }
-  })
-  const tab: MenuTab = {
-    path: item.path,
-    name: item.name,
-    label: item.label,
-    icon: item.icon,
-    checked: true,
-    selectKeys: selectKeys,
-    openKeys: openKeys,
-  }
-  storeX.selectMenu(tab)
+  // const pathArray = item.path.split('/')
+  // let parentRoute = ''
+  // if (pathArray && pathArray.length >= 1) {
+  //   parentRoute = '/' + pathArray[1]
+  // }
+  // const selectKeys: string[] = []
+  // const openKeys: string[] = []
+  // router.getRoutes().forEach((route) => {
+  //   if (route.path === item.path) {
+  //     const keys: string = JSON.stringify(route.name).replaceAll('"', '')
+  //     selectKeys.push(keys)
+  //   }
+  //   if (parentRoute === route.path) {
+  //     const keys: string = 'sub' + JSON.stringify(route.name).replaceAll('"', '')
+  //     openKeys.push(keys)
+  //   }
+  // })
+  // const tab: MenuTab = {
+  //   path: item.path,
+  //   name: item.name,
+  //   label: item.label,
+  //   icon: item.icon,
+  //   checked: true,
+  //   selectKeys: selectKeys,
+  //   openKeys: openKeys,
+  // }
+  // storeX.selectMenu(tab)
 }
 const close = (item: MenuTab) => {
   let path = storeX.closeTab(item)

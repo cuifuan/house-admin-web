@@ -51,7 +51,7 @@ storeX.$subscribe(
                       “patch function” ：通过 $patch 传递函数的方式改变的
             *
             * */
-    console.log(JSON.parse(JSON.stringify(statex)))
+    // console.log(JSON.parse(JSON.stringify(statex)))
     // console.log(JSON.parse(JSON.stringify(mutation)))
     state.selectedKeys = statex.selectKeys
     state.openKeys = statex.openKeys

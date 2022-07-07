@@ -26,17 +26,7 @@ import { dbStore } from '@/store'
 
 const storeX = dbStore()
 const collapsed = computed(() => storeX.collapsed)
-const toggleCollapsed = () => {
-  console.log(1122)
-  const flag = !collapsed
-  storeX.setCollapsed(flag)
-  if (flag) {
-    storeX.openKeys = []
-    storeX.preOpenKeys = storeX.openKeys
-  } else {
-    storeX.openKeys = storeX.preOpenKeys || []
-  }
-}
+// let collapsed = false
 </script>
 <style lang="less" scoped>
 @menu-width: 266px;

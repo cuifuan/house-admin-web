@@ -119,6 +119,7 @@ export const dbStore = defineStore({
     openKeys: [],
     collapsed: false,
     rootSubmenuKeys: [],
+    preOpenKeys: [],
   }),
   actions: {
     setCollapsed(val: boolean) {

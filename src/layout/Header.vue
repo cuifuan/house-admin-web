@@ -8,15 +8,15 @@
             <MenuFoldOutlined v-else />
           </a-button>
         </a-col>
-        <a-col :span="8">
-          <a-breadcrumb style="line-height: 50px">
-            <a-breadcrumb-item>首页</a-breadcrumb-item>
-            <a-breadcrumb-item><a href="">一级</a></a-breadcrumb-item>
-            <a-breadcrumb-item>地址</a-breadcrumb-item>
-          </a-breadcrumb>
-        </a-col>
-        <a-col :span="7" class="title">云管理平台</a-col>
-        <a-col :span="7" style="text-align: right; padding-right: 30px; box-sizing: border-box">
+        <!--        <a-col :span="8">-->
+        <!--          <a-breadcrumb style="line-height: 50px">-->
+        <!--            <a-breadcrumb-item>首页</a-breadcrumb-item>-->
+        <!--            <a-breadcrumb-item><a href="">一级</a></a-breadcrumb-item>-->
+        <!--            <a-breadcrumb-item>地址</a-breadcrumb-item>-->
+        <!--          </a-breadcrumb>-->
+        <!--        </a-col>-->
+        <a-col :span="16" class="title">云管理平台</a-col>
+        <a-col :span="6" style="text-align: right; padding-right: 30px; box-sizing: border-box">
           <a-avatar src="https://joeschmoe.io/api/v1/random" />
           admin
         </a-col>
@@ -37,8 +37,15 @@ import { dbStore } from '@/store'
 const collapsed = ref(false)
 const storeX = dbStore()
 const toggleCollapsed = () => {
-  collapsed.value = !collapsed.value
-  storeX.setCollapsed(collapsed.value)
+  collapsed.value = !storeX.collapsed
+  console.log('collapsed', collapsed.value)
+  if (collapsed.value) {
+    storeX.preOpenKeys = storeX.openKeys
+    storeX.openKeys = []
+  } else {
+    storeX.openKeys = storeX.preOpenKeys || []
+  }
+  storeX.collapsed = collapsed.value
 }
 const newTabIndex = ref(0)
 </script>

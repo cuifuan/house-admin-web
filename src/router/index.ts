@@ -94,21 +94,20 @@ router.beforeEach((to, from, next) => {
         console.log(222, err)
       })
   } else {
-    // 处理菜单
-    console.log('是我 a', to.matched)
-    console.log('是我 path', to)
+    // 获取菜单折叠状态
     let openKeys: string[] = []
+    let preOpenKeys: string[] = []
     to.matched.forEach((r) => {
-      openKeys.push(typeof r.name === 'string' ? r.name : '')
+      if (!storeX.collapsed) {
+        openKeys.push(typeof r.name === 'string' ? r.name : '')
+      } else {
+        preOpenKeys.push(typeof r.name === 'string' ? r.name : '')
+      }
     })
+    if (storeX.collapsed) {
+      storeX.preOpenKeys = preOpenKeys
+    }
     const name = typeof to.name === 'string' ? to.name : ''
-    // if (name !== 'Home') {
-    //   let openKey = 'sub'.concat(name)
-    //   const openKeys = [openKey]
-    //   storeX.openKeys = openKeys
-    //   const selectKeys = typeof to.name === 'string' ? [to.name] : []
-    //   storeX.selectKeys = selectKeys
-    //   console.log(typeof to.meta.name)
     const tab: MenuTab = {
       path: to.path,
       name: name,
