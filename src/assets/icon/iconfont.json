@@ -1,0 +1,58 @@
+{
+  "id": "3017944",
+  "name": "iconfont",
+  "font_family": "bran-icon-",
+  "css_prefix_text": "bran-icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1420860",
+      "name": "user",
+      "font_class": "user3",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "29922587",
+      "name": "user",
+      "font_class": "menu-user",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "834641",
+      "name": "user",
+      "font_class": "user",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "3746974",
+      "name": "user",
+      "font_class": "user1",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "4529763",
+      "name": "用户/user",
+      "font_class": "user2",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "1197433",
+      "name": "house",
+      "font_class": "house",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "26419701",
+      "name": "accessControl",
+      "font_class": "access",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}

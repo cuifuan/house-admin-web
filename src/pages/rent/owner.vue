@@ -25,7 +25,7 @@
       <a-button type="default" class="default_btn" @click="downTemplate" :loading="downLoad"
         >模板下载
       </a-button>
-      <a-button type="default" class="default_btn">导入</a-button>
+      <a-button type="default" class="default_btn" @click="showImport">导入</a-button>
       <a-button type="default" class="default_btn">导出</a-button>
     </div>
     <div class="search-result-list">
@@ -46,6 +46,10 @@
       </a-table>
     </div>
   </div>
+  <!--  导入弹窗-->
+  <a-modal v-model:visible="visible" title="导入" :footer="null">
+    <p>{{ modalText }}</p>
+  </a-modal>
 </template>
 <script lang="ts" setup>
 import type { FormInstance } from 'ant-design-vue'
@@ -105,10 +109,12 @@ const state = reactive<{
   selectedRowKeys: Key[]
   loading: boolean
   downLoad: boolean
+  visible: boolean
 }>({
   selectedRowKeys: [], // Check here to configure the default column
   loading: false,
   downLoad: false,
+  visible: false,
 })
 
 getRentList(params).then((res) => {
@@ -133,8 +139,9 @@ const onSelectChange = (selectedRowKeys: Key[]) => {
   console.log('selectedRowKeys changed: ', selectedRowKeys)
   state.selectedRowKeys = selectedRowKeys
 }
-const resetForm = () => {
-  // formRef.value.resetFields()
+const showImport = () => {
+  console.log(22)
+  state.visible = true
 }
 /**
  * 下载模板
@@ -171,7 +178,7 @@ const downTemplate = () => {
     })
 }
 
-const { selectedRowKeys, downLoad } = toRefs(state)
+const { selectedRowKeys, downLoad, visible } = toRefs(state)
 </script>
 
 <style lang="less" scoped>

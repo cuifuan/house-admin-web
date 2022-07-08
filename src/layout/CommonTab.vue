@@ -1,7 +1,7 @@
 <template>
   <a-tag
     v-for="tag in tags"
-    :closable="tag.name !== 'home'"
+    :closable="tag.name !== 'HomeIndex'"
     :key="tag.label"
     size="small"
     :disable-transitions="false"

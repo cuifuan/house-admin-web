@@ -107,7 +107,7 @@ export const dbStore = defineStore({
     tabsList: [
       {
         path: '/',
-        name: 'home',
+        name: 'HomeIndex',
         label: '首页',
         icon: 'home',
         checked: true,
@@ -127,7 +127,7 @@ export const dbStore = defineStore({
     },
     //选择标签 选择面包屑
     selectMenu(val: MenuTab) {
-      if (val.name === 'home') {
+      if (val.name === 'HomeIndex') {
         this.currentMenu = null
       } else {
         this.currentMenu = val

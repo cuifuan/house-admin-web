@@ -40,13 +40,13 @@ api.interceptors.request.use((config) => {
  */
 api.interceptors.response.use((response: AxiosResponse): AxiosResponse | Promise<AxiosResponse> => {
   const res = response.data
-  // console.log('xxx' + JSON.stringify(res))
+  console.log('res.code', res.code)
   if (res.code === 0) {
     // 存在分页的情况会返回整个 res
     return res
   } else if (res.code === 401) {
     // 登录失效
-    localStorage.remove('token')
+    localStorage.removeItem('token')
     router.push({ path: '/login', query: { redirect: router.currentRoute.value.fullPath } })
     return Promise.reject(response)
   } else {

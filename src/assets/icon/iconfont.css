@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "bran-icon-"; /* Project id 3017944 */
+  src: url('iconfont.woff2?t=1657270865935') format('woff2'),
+       url('iconfont.woff?t=1657270865935') format('woff'),
+       url('iconfont.ttf?t=1657270865935') format('truetype'),
+       url('iconfont.svg?t=1657270865935#bran-icon-') format('svg');
+}
+
+.bran-icon- {
+  font-family: "bran-icon-" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bran-icon-user3:before {
+  content: "\e625";
+}
+
+.bran-icon-menu-user:before {
+  content: "\e63b";
+}
+
+.bran-icon-user:before {
+  content: "\e63a";
+}
+
+.bran-icon-user1:before {
+  content: "\e608";
+}
+
+.bran-icon-user2:before {
+  content: "\e60f";
+}
+
+.bran-icon-house:before {
+  content: "\e61a";
+}
+
+.bran-icon-access:before {
+  content: "\e601";
+}
+

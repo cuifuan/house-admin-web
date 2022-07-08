@@ -1,6 +1,10 @@
 <template>
   <a-layout id="components-layout-custom-style" theme="light">
-    <a-layout-sider width="266" v-model:collapsed="collapsed">
+    <a-layout-sider width="210" v-model:collapsed="collapsed">
+      <div class="title">
+        <span v-if="!collapsed">云管理平台</span>
+        <IconFont type="bran-icon-house" v-else />
+      </div>
       <Sidebar></Sidebar>
     </a-layout-sider>
     <a-layout class="right-custom">
@@ -50,5 +54,17 @@ const collapsed = computed(() => storeX.collapsed)
       box-sizing: border-box;
     }
   }
+}
+.title {
+  height: 50px;
+  line-height: 50px;
+  //background-color: #3d5a80;
+  border-bottom-color: white;
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
