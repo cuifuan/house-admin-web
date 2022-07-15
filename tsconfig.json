@@ -11,8 +11,11 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": [
+      "es5",
+      "es6",
       "esnext",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
     "skipLibCheck": true,
     "baseUrl": "./",
@@ -22,9 +25,12 @@
       ],
       "@/*": [
         "src/*"
-      ],
+      ]
     },
-    "types": ["element-plus/global","node"]
+    "types": [
+      "element-plus/global",
+      "node"
+    ]
   },
   "include": [
     "src/**/*.ts",

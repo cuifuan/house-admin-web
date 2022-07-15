@@ -48,14 +48,40 @@
   </div>
   <!--  导入弹窗-->
   <a-modal v-model:visible="visible" title="导入" :footer="null">
-    <p>{{ modalText }}</p>
+    <a-upload
+      :file-list="fileList"
+      :before-upload="beforeUpload"
+      @remove="handleRemove"
+      accept=".xlsx"
+    >
+      <a-button>
+        <upload-outlined></upload-outlined>
+        选择文件，仅为.xlsx文件，不超过 10M
+      </a-button>
+    </a-upload>
+    <a-button
+      type="primary"
+      :disabled="fileList.length === 0"
+      :loading="uploading"
+      style="margin-top: 16px"
+      @click="handleUpload"
+    >
+      {{ uploading ? '上传中' : '开始上传' }}
+    </a-button>
   </a-modal>
 </template>
 <script lang="ts" setup>
-import type { FormInstance } from 'ant-design-vue'
-import { reactive, ref, toRefs } from 'vue'
+import type { FormInstance, UploadProps } from 'ant-design-vue'
+import { UploadOutlined } from '@ant-design/icons-vue'
+
+import { getCurrentInstance, reactive, ref, toRefs } from 'vue'
 import { getRentList } from '@/services/sys.service'
 import axios from 'axios'
+// import { VueJsonp } from 'vue-jsonp'
+// import fetchJsonp from 'fetch-jsonp'
+import { api } from '../../services/api'
+
+const uploading = ref<boolean>(false)
 
 const columns = [
   {
@@ -110,11 +136,13 @@ const state = reactive<{
   loading: boolean
   downLoad: boolean
   visible: boolean
+  fileList: UploadProps['fileList']
 }>({
   selectedRowKeys: [], // Check here to configure the default column
   loading: false,
   downLoad: false,
   visible: false,
+  fileList: [],
 })
 
 getRentList(params).then((res) => {
@@ -148,7 +176,6 @@ const showImport = () => {
  */
 const downTemplate = () => {
   state.downLoad = true
-  console.log('模板下载')
   const token = localStorage.getItem('token')
   axios({
     method: 'get',
@@ -177,8 +204,55 @@ const downTemplate = () => {
       state.downLoad = false
     })
 }
+const beforeUpload: UploadProps['beforeUpload'] = (file) => {
+  state.fileList = [file]
+  return false
+}
 
-const { selectedRowKeys, downLoad, visible } = toRefs(state)
+// const self = this
+const handleUpload = () => {
+  const formData = new FormData()
+  if (state.fileList && state.fileList.length > 0) {
+    formData.append('file', state.fileList[0] as any, 'file')
+  }
+  // uploading.value = true
+  // const token = localStorage.getItem('token')
+  // You can use any AJAX library you like
+  const config = { headers: { 'Content-Type': 'multipart/form-data' } } //修改请求头
+  api.post('/rentList/import', formData, config).then((res) => {
+    console.log(res)
+  })
+  // axios({
+  //   method: 'POST',
+  //
+  //   data: formData,
+  // }).then((res) => {
+  //   console.log(res)
+  // })
+
+  // const jsonp = VueJsonp()
+
+  // request('', {
+  //   method: 'post',
+  //   data: formData,
+  // })
+  //   .then(() => {
+  //     fileList.value = []
+  //     uploading.value = false
+  //     message.success('upload successfully.')
+  //   })
+  //   .catch(() => {
+  //     uploading.value = false
+  //     message.error('upload failed.')
+  //   })
+}
+const handleRemove: UploadProps['onRemove'] = (file) => {
+  // const index = state.fileList.indexOf(file)
+  // const newFileList = state.fileList.slice()
+  // newFileList.splice(index, 1)
+  // state.fileList = []
+}
+const { selectedRowKeys, downLoad, visible, fileList } = toRefs(state)
 </script>
 
 <style lang="less" scoped>
